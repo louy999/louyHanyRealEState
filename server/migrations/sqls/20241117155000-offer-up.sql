@@ -13,5 +13,7 @@ CREATE TABLE offer(
     installment VARCHAR(250) NOT NULL,
     areas VARCHAR(250) NOT NULL,
     status BOOLEAN NOT NULL,
-    cat VARCHAR(250) NOT NULL
+    cat VARCHAR(250) NOT NULL,
+    title Text,
+    unit_type Text
 );

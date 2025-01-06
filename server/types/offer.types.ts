@@ -13,6 +13,8 @@ type OfferTypes = {
 	bath: string | number
 	status: string | boolean
 	cat: string
+	title: string
+	unit_type: string
 }
 
 export default OfferTypes

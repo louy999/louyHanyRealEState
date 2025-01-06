@@ -8,7 +8,7 @@ class OfferModel {
 			//open connect with DB1
 			const connect = await db.connect()
 			const sql =
-				'INSERT INTO offer ( developer_id, image_offer, furniture, down_payment, types, location, installment, areas, bed, bath, status, cat ) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) returning *'
+				'INSERT INTO offer ( developer_id, image_offer, furniture, down_payment, types, location, installment, areas, bed, bath, status, cat, title, unit_type ) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14 ) returning *'
 			//run query
 			const result = await connect.query(sql, [
 				u.developer_id,
@@ -23,6 +23,8 @@ class OfferModel {
 				u.bath,
 				u.status === '' ? true : u.status,
 				u.cat,
+				u.title,
+				u.unit_type,
 			])
 			//release connect
 			connect.release()
@@ -58,6 +60,21 @@ class OfferModel {
 			const sql = 'SELECT * from offer WHERE id=($1)'
 			//run query
 			const result = await connect.query(sql, [id])
+			//release connect
+			connect.release()
+			//return created Offer
+			return result.rows[0]
+		} catch (err) {
+			throw new Error(`.could not find Offer ${id}, ${err}`)
+		}
+	}
+	async getOfferByType(types: string): Promise<OfferTypes> {
+		try {
+			//open connect with DB
+			const connect = await db.connect()
+			const sql = 'SELECT * from offer WHERE types=($1)'
+			//run query
+			const result = await connect.query(sql, [types])
 			//release connect
 			connect.release()
 			//return created Offer

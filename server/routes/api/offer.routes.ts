@@ -42,6 +42,20 @@ routes.get('/:id', async (req: Request, res: Response, next) => {
 		next(err)
 	}
 })
+routes.get('/types/:types', async (req: Request, res: Response, next) => {
+	try {
+		const offer = await offerModel.getOfferByType(
+			req.params.types as unknown as string
+		)
+		res.json({
+			status: 'success',
+			data: offer,
+			message: 'offer retrieved successfully',
+		})
+	} catch (err) {
+		next(err)
+	}
+})
 routes.get('/name/:name', async (req: Request, res: Response, next) => {
 	try {
 		const offer = await offerModel.getOneFromDeveloperId(
