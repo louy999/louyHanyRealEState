@@ -5,7 +5,7 @@ type User = {
 	email: string
 	phone: string | number
 	password: string
-	access: boolean
+	access: boolean | string
 	image_profile: string
 }
 

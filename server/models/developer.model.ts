@@ -8,12 +8,14 @@ class DeveloperModel {
 			//open connect with DB1
 			const connect = await db.connect()
 			const sql =
-				'INSERT INTO developer ( name, image_developer, location ) values ($1, $2, $3) returning *'
+				'INSERT INTO developer ( name, image_developer, location, show_developer, description ) values ($1, $2, $3, $4, $5) returning *'
 			//run query
 			const result = await connect.query(sql, [
 				u.name,
 				u.image_developer,
 				u.location,
+				u.show_developer,
+				u.description,
 			])
 			//release connect
 			connect.release()

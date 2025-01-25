@@ -4,5 +4,7 @@ CREATE TABLE developer(
     date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     name VARCHAR(250) NOT NULL,
     image_developer TEXT NOT NULL,
-    location TEXT [] NOT NULL
+    location TEXT [] NOT NULL,
+    show_developer TEXT [] NOT NULL,
+    description Text NOT NULL
 );

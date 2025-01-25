@@ -15,7 +15,7 @@ interface ApiResponse {
   data: Developer[];
 }
 
-const DeveloperSearchBanner = () => {
+const DeveloperSearch = () => {
   const [dataDeveloper, setDataDeveloper] = useState<Developer[]>([]);
   const [inputSearch, setInputSearch] = useState<string>("");
   const [filter, setFilter] = useState<Developer[]>([]);
@@ -43,11 +43,11 @@ const DeveloperSearchBanner = () => {
 
   return (
     <>
-      <div className="relative w-full h-fit ">
+      <div className="relative w-full h-fit rounded-lg bg-white px-2">
         <label className="input input-info flex items-center gap-2 w-full">
           <input
             type="text"
-            className="grow h-[50px] outline-none "
+            className="grow rounded-lg p-2 outline-none "
             placeholder="Search By Developer"
             onChange={(e) => setInputSearch(e.target.value)}
             value={inputSearch}
@@ -73,7 +73,7 @@ const DeveloperSearchBanner = () => {
           )}
         </label>
         {inputSearch && (
-          <div className="absolute top-15 w-full bg-white text-black shadow-xl rounded-lg max-h-60 h-auto overflow-y-auto">
+          <div className="absolute top-15 w-full bg-white text-black shadow-xl rounded-lg h-[100px] overflow-y-auto">
             {filter.map((d, i) => (
               <Link
                 href={`/developer/${d.id}`}
@@ -113,4 +113,4 @@ const DeveloperSearchBanner = () => {
   );
 };
 
-export default DeveloperSearchBanner;
+export default DeveloperSearch;

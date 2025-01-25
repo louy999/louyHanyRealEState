@@ -8,7 +8,7 @@ class OfferModel {
 			//open connect with DB1
 			const connect = await db.connect()
 			const sql =
-				'INSERT INTO offer ( developer_id, image_offer, furniture, down_payment, types, location, installment, areas, bed, bath, status, cat, title, unit_type ) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14 ) returning *'
+				'INSERT INTO offer ( developer_id, image_offer, furniture, down_payment, types, location, installment, areas, bed, bath, status, cat, title, unit_type, developer_name ) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15 ) returning *'
 			//run query
 			const result = await connect.query(sql, [
 				u.developer_id,
@@ -25,6 +25,7 @@ class OfferModel {
 				u.cat,
 				u.title,
 				u.unit_type,
+				u.developer_name,
 			])
 			//release connect
 			connect.release()
@@ -42,6 +43,21 @@ class OfferModel {
 			//open connect with DB
 			const connect = await db.connect()
 			const sql = 'SELECT *  from offer'
+			//run query
+			const result = await connect.query(sql)
+			//release connect
+			connect.release()
+			//return created Offer
+			return result.rows
+		} catch (err) {
+			throw new Error(`${err}`)
+		}
+	}
+	async getAllOffersUint(): Promise<OfferTypes[]> {
+		try {
+			//open connect with DB
+			const connect = await db.connect()
+			const sql = 'SELECT unit_type  from offer'
 			//run query
 			const result = await connect.query(sql)
 			//release connect
@@ -80,10 +96,10 @@ class OfferModel {
 			//return created Offer
 			return result.rows[0]
 		} catch (err) {
-			throw new Error(`.could not find Offer ${id}, ${err}`)
+			throw new Error(`.could not find Offer ${types}, ${err}`)
 		}
 	}
-	async getOneFromDeveloperId(developer_id: string): Promise<OfferTypes> {
+	async getOneFromDeveloperId(developer_id: string): Promise<OfferTypes[]> {
 		try {
 			//open connect with DB
 			const connect = await db.connect()
@@ -93,7 +109,7 @@ class OfferModel {
 			//release connect
 			connect.release()
 			//return created Offer
-			return result.rows[0]
+			return result.rows
 		} catch (err) {
 			throw new Error(`.could not find Offer ${developer_id}, ${err}`)
 		}

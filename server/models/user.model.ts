@@ -14,14 +14,19 @@ class UserModel {
 		try {
 			//open connect with DB1
 			const connect = await db.connect()
-			const sql =
+			const sql = `SELECT password FROM users WHERE phone=$1`
+			const res = await connect.query(sql, [u.phone])
+			if (res.rows.length) {
+				throw new Error(`This number (${u.phone}) already exists`)
+			}
+			const sqlAddUser =
 				'INSERT INTO users ( name, phone, password, access, email, image_profile ) values ($1, $2, $3, $4, $5, $6) returning *'
 			//run query
-			const result = await connect.query(sql, [
+			const result = await connect.query(sqlAddUser, [
 				u.name,
 				u.phone,
 				hashPassword(u.password),
-				u.access,
+				u.access === '' ? false : true,
 				u.email,
 				u.image_profile === '' ? 'blank-profile-.png' : u.image_profile,
 			])

@@ -20,6 +20,7 @@ const nextConfig: NextConfig = {
     customKey: "novaraTo",
     local: "http://localhost:5000/api",
     img: "http://localhost:5000",
+    SecretToken: "novaraTo",
   },
 };
 

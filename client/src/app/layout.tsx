@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import "animate.css";
 import Navbar from "./components/NavBarComponents/navbar";
 
 const geistSans = Geist({
@@ -30,8 +31,9 @@ export default function RootLayout({
         <link
           rel="preconnect"
           href="https://fonts.gstatic.com"
-          crossOrigin="true"
+          crossOrigin="anonymous"
         />
+
         <link
           href="https://fonts.googleapis.com/css2?family=MonteCarlo&display=swap"
           rel="stylesheet"

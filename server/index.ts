@@ -37,8 +37,11 @@ app.get('/healthz', (_req: Request, res: Response) => {
 	res.send({status: 'ok✌️'})
 })
 
-app.post('/upload', upload.single('image'), (req: any, res) => {
-	res.send(req.file.filename)
+app.post('/upload', upload.array('image', 10), (req: any, res) => {
+	const fileNames = (req.files as Express.Multer.File[]).map(
+		(file) => file.filename
+	)
+	res.send(fileNames)
 })
 app.post(
 	'/upload/file',

@@ -11,7 +11,7 @@ const LocationSearchBanner: React.FC<LocationSearchBannerProps> = ({
 }) => {
   return (
     <select
-      className="select select-info w-full lg:w-fit h-[50px] bg-white"
+      className="select select-info w-full lg:w-fit h-[50px] bg-white "
       onChange={(e) => changeSet(e.target.value)}
       value={valueSet}
     >

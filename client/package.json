@@ -10,15 +10,23 @@
   },
   "dependencies": {
     "@types/axios": "^0.9.36",
+    "animate.css": "^4.1.1",
     "axios": "^1.7.9",
+    "cookies-next": "^5.0.2",
+    "date-fns": "^4.1.0",
+    "jsonwebtoken": "^9.0.2",
     "next": "15.1.2",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.4.0",
-    "react-phone-input-2": "^2.15.1"
+    "react-phone-input-2": "^2.15.1",
+    "react-player": "^2.16.0",
+    "react-toastify": "^11.0.2",
+    "swiper": "^11.2.1"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@types/jsonwebtoken": "^9.0.7",
     "@types/node": "^20",
     "@types/react": "^19",
     "@types/react-dom": "^19",

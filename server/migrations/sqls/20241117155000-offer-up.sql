@@ -15,5 +15,6 @@ CREATE TABLE offer(
     status BOOLEAN NOT NULL,
     cat VARCHAR(250) NOT NULL,
     title Text,
-    unit_type Text
+    unit_type Text,
+    developer_name VARCHAR(250)
 );

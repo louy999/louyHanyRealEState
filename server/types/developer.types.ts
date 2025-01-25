@@ -4,6 +4,8 @@ type DeveloperTypes = {
 	name: string
 	image_developer: string
 	location: string
+	show_developer: string
+	description: string
 }
 
 export default DeveloperTypes

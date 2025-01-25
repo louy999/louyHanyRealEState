@@ -1,31 +1,107 @@
-import React from "react";
-import ListTop from "./listTop";
+"use client";
+import { useState } from "react";
+import { getCookie } from "cookies-next/client";
+import axios from "axios";
+import { toast } from "react-toastify";
 
 const AddRequest = () => {
+  const token = getCookie("token");
+  const [request, setRequest] = useState("");
+  const [err, setErr] = useState(false);
+
+  const addRequestFetch = async () => {
+    if (token) {
+      if (request) {
+        try {
+          const res = await axios.post(`${process.env.local}/req`, {
+            request,
+            user_id: token,
+          });
+          toast.success("this request is done");
+          console.log(res);
+
+          window.location.reload();
+        } catch (error) {
+          console.log(error);
+        }
+      } else {
+        setErr(true);
+        setTimeout(() => {
+          setErr(false);
+        }, 4000);
+      }
+    } else {
+      toast.error("please login");
+    }
+  };
+
   return (
-    <form>
-      <div className="w-full mb-4 shadow-lg border border-gray-200 rounded-lg bg-gray-50 :bg-gray-700 :border-gray-600">
-        <ListTop />
-        <div className="px-4 py-2 bg-white rounded-b-lg :bg-gray-800">
-          <label htmlFor="editor" className="sr-only">
-            Publish post Where Dreams Meet Reality!
-          </label>
-          <textarea
-            id="editor"
-            rows="5"
-            className="block w-full px-0 text-sm text-gray-800 bg-white border-0  focus:ring-0 resize-none "
-            placeholder="Write an article..."
-            required
-          ></textarea>
-        </div>
-        <div className="w-full flex justify-end p-2 border-t-2 border-gray-200 ">
-          <button
-            type="submit"
-            className="inline-flex w-fit items-center px-5 py-2.5 text-sm font-medium text-center text-white bg-primary100 rounded-lg focus:ring-4 focus:ring-primary300  hover:bg-primary200"
+    <form className="mb-10 shadow-lg" onSubmit={(e) => e.preventDefault()}>
+      <label htmlFor="chat" className="sr-only">
+        Your message
+      </label>
+      <div className="flex items-center px-3 py-2 rounded-lg bg-gray-50 :bg-gray-700">
+        {/* <button
+          type="button"
+          className="inline-flex justify-center p-2 text-gray-500 rounded-lg cursor-pointer hover:text-gray-900 hover:bg-gray-100 :text-gray-400 :hover:text-white :hover:bg-gray-600"
+        >
+          <svg
+            className="w-5 h-5"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 20 18"
           >
-            Publish post
-          </button>
-        </div>
+            <path
+              fill="currentColor"
+              d="M13 5.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0ZM7.565 7.423 4.5 14h11.518l-2.516-3.71L11 13 7.565 7.423Z"
+            />
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M18 1H2a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h16a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1Z"
+            />
+            <path
+              stroke="currentColor"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              strokeWidth="2"
+              d="M13 5.5a.5.5 0 1 1-1 0 .5.5 0 0 1 1 0ZM7.565 7.423 4.5 14h11.518l-2.516-3.71L11 13 7.565 7.423Z"
+            />
+          </svg>
+          <span className="sr-only">Upload image</span>
+        </button> */}
+
+        <textarea
+          id="chat"
+          value={request}
+          onChange={(e) => setRequest(e.target.value)}
+          rows={3}
+          className={`block mx-4 p-2.5  resize-none w-full text-sm text-gray-900 bg-white rounded-lg ${
+            err
+              ? "border-2 border-red-500 animate__animated animate__shakeX"
+              : "border border-black"
+          } focus:ring-blue-500 focus:border-blue-500 `}
+          placeholder="Your message..."
+        ></textarea>
+        <button
+          type="submit"
+          onClick={addRequestFetch}
+          className="inline-flex justify-center p-2 text-blue-600 rounded-full cursor-pointer hover:bg-blue-100 :text-blue-500 :hover:bg-gray-600"
+        >
+          <svg
+            className="w-5 h-5 rotate-90 rtl:-rotate-90"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="currentColor"
+            viewBox="0 0 18 20"
+          >
+            <path d="m17.914 18.594-8-18a1 1 0 0 0-1.828 0l-8 18a1 1 0 0 0 1.157 1.376L8 18.281V9a1 1 0 0 1 2 0v9.281l6.758 1.689a1 1 0 0 0 1.156-1.376Z" />
+          </svg>
+          <span className="sr-only">Send message</span>
+        </button>
       </div>
     </form>
   );

@@ -15,6 +15,7 @@ type OfferTypes = {
 	cat: string
 	title: string
 	unit_type: string
+	developer_name: string
 }
 
 export default OfferTypes

@@ -53,17 +53,17 @@ class ReplayModel {
 			throw new Error(`.could not find replay ${id}, ${err}`)
 		}
 	}
-	async getOneFromUserId(user_id: string): Promise<ReplayTypes> {
+	async getOneFromUserId(user_id: string): Promise<ReplayTypes[]> {
 		try {
 			//open connect with DB
 			const connect = await db.connect()
-			const sql = 'SELECT * from replay WHERE request_id=($1)'
+			const sql = 'SELECT * from replay WHERE user_id=($1)'
 			//run query
 			const result = await connect.query(sql, [user_id])
 			//release connect
 			connect.release()
 			//return created replay
-			return result.rows[0]
+			return result.rows
 		} catch (err) {
 			throw new Error(`.could not find replay ${user_id}, ${err}`)
 		}

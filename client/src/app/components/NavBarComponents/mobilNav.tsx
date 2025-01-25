@@ -3,9 +3,12 @@ import React, { useState } from "react";
 import { CiMenuFries } from "react-icons/ci";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { getCookie } from "cookies-next/client";
+import Image from "next/image";
 
 const MobilNav = () => {
   const pathname = usePathname();
+  const value = getCookie("token");
 
   const [activeMenu, setActiveMenu] = useState(false);
   return (
@@ -60,22 +63,41 @@ const MobilNav = () => {
                 Request
               </Link>
             </li>
-            <div className="flex gap-5 justify-between mt-2">
+            {value === undefined ? (
+              <div className="flex gap-5 justify-between mt-2">
+                <Link
+                  className="bg-accent100 text-white w-full rounded-md text-center capitalize "
+                  href="/login"
+                  onClick={() => setActiveMenu(false)}
+                >
+                  login
+                </Link>
+                <Link
+                  className="bg-accent100 text-white w-full rounded-md text-center capitalize "
+                  href="/register"
+                  onClick={() => setActiveMenu(false)}
+                >
+                  Register
+                </Link>
+              </div>
+            ) : (
               <Link
-                className="bg-accent100 text-white w-full rounded-md text-center capitalize "
-                href="/login"
-                onClick={() => setActiveMenu(false)}
+                href="/profile"
+                className="flex  items-center gap-1 capitalize text-xl font-bold cursor-pointer"
               >
-                login
+                {" "}
+                <Image
+                  src={`${process.env.img}/image/${sessionStorage.getItem(
+                    "image_profile"
+                  )}`}
+                  width={200}
+                  alt=""
+                  className="w-8 h-8 rounded-full"
+                  height={200}
+                />{" "}
+                <div>{sessionStorage.getItem("name")}</div>
               </Link>
-              <Link
-                className="bg-accent100 text-white w-full rounded-md text-center capitalize "
-                href="/register"
-                onClick={() => setActiveMenu(false)}
-              >
-                Register
-              </Link>
-            </div>
+            )}
           </ul>
         </>
       )}

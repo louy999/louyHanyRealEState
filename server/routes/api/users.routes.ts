@@ -86,10 +86,10 @@ routes.post('/auth', async (req: Request, res: Response, next) => {
 	try {
 		const {phone, password} = req.body
 		const user = await userModel.auth(phone, password)
-		const token = jwt.sign({user}, config.tokenSecret as unknown as string)
+		// const token = jwt.sign({user}, config.tokenSecret as unknown as string)
 		res.json({
 			status: 'success',
-			data: {...user, token},
+			data: {...user},
 			message: 'user auth successfully',
 		})
 	} catch (err) {

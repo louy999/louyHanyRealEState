@@ -30,6 +30,18 @@ routes.get('/', async (req: Request, res: Response, next) => {
 		next(err.message)
 	}
 })
+routes.get('/type', async (req: Request, res: Response, next) => {
+	try {
+		const offer = await offerModel.getAllOffersUint()
+		res.json({
+			status: 'success',
+			data: offer,
+			message: 'users retrieved successfully',
+		})
+	} catch (err: any) {
+		next(err.message)
+	}
+})
 routes.get('/:id', async (req: Request, res: Response, next) => {
 	try {
 		const offer = await offerModel.getOneOffer(req.params.id as unknown as string)
