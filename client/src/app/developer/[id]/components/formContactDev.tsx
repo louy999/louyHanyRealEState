@@ -1,13 +1,12 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState } from "react";
-import { Swiper, SwiperSlide } from "swiper/react";
-import "swiper/css";
 import PhoneInput from "react-phone-input-2";
 import "react-phone-input-2/lib/style.css";
 import Image from "next/image";
 
-const FormContactDev = ({ dataDev }) => {
+const FormContactDev = ({ dataDev }: any) => {
   const [phone, setPhoneNumber] = useState("");
 
   return (

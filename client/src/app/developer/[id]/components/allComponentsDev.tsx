@@ -17,7 +17,15 @@ interface DeveloperData {
 }
 
 const AllComponentsDev = () => {
-  const [dataDev, setDataDev] = useState([]);
+  const [dataDev, setDataDev] = useState<DeveloperData>({
+    show_developer: [],
+    id: "",
+    date: "",
+    name: "",
+    image_developer: "",
+    location: [],
+    description: "",
+  });
 
   const pathname = usePathname();
   useEffect(() => {

@@ -1,6 +1,4 @@
 import React from "react";
-import SearchBar from "./components/SearchBar";
-import OffersSearch from "./components/offersSearch";
 
 const page = () => {
   return (

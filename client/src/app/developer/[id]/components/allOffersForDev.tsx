@@ -16,13 +16,35 @@ import "swiper/css/navigation";
 import "swiper/css/pagination";
 import { Navigation, Pagination } from "swiper/modules";
 
-const AllOffersForDev = ({ dataDev }) => {
-  const [dataOffer, setDataOffer] = useState([]);
+interface DeveloperData {
+  id: string;
+  name: string;
+}
+
+interface OfferData {
+  id: string;
+  image_offer: string;
+  location: string;
+  title: string;
+  types: string;
+  bed?: number;
+  bath?: number;
+  areas: number;
+  down_payment: number;
+  installment: string;
+}
+
+interface DeveloperProps {
+  dataDev: DeveloperData;
+}
+
+const AllOffersForDev = ({ dataDev }: DeveloperProps) => {
+  const [dataOffer, setDataOffer] = useState<OfferData[]>([]);
 
   useEffect(() => {
     const resOfferDev = async () => {
       try {
-        const res = await axios.get(
+        const res = await axios.get<{ data: OfferData[] }>(
           `${process.env.local}/offer/name/${dataDev.id}`
         );
         setDataOffer(res.data.data);
@@ -30,7 +52,9 @@ const AllOffersForDev = ({ dataDev }) => {
         console.log(err);
       }
     };
-    resOfferDev();
+    if (dataDev.id) {
+      resOfferDev();
+    }
   }, [dataDev]);
 
   return (

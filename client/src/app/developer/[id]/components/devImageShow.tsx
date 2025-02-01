@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 "use client";
 
 import { useState } from "react";
@@ -5,7 +6,7 @@ import Image from "next/image";
 import { FaArrowAltCircleRight } from "react-icons/fa";
 import { FaArrowAltCircleLeft } from "react-icons/fa";
 
-const DevImageShow = ({ dataDev }) => {
+const DevImageShow = ({ dataDev }: any) => {
   const [numberImage, setNumberImage] = useState(0);
 
   if (

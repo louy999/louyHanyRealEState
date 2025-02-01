@@ -3,14 +3,23 @@ import React, { useEffect, useState } from "react";
 import axios from "axios";
 import ReactPlayer from "react-player";
 
-const InfoDeveloper = ({ dataDev }) => {
-  const [dataVideo, setDataVideo] = useState([]);
+interface Video {
+  title_video: string;
+  video: string;
+}
+
+const InfoDeveloper = ({
+  dataDev,
+}: {
+  dataDev: { id: string | number; name: string; description: string };
+}) => {
+  const [dataVideo, setDataVideo] = useState<Video[]>([]);
   const [choiceVideo, setChoiceVideo] = useState(0);
 
   useEffect(() => {
     const fetchVideoDev = async () => {
       try {
-        const res = await axios.get(
+        const res = await axios.get<{ data: Video[] }>(
           `${process.env.local}/video/dev/${dataDev.id}`
         );
         setDataVideo(res.data.data);
