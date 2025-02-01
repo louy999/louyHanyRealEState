@@ -26,7 +26,10 @@ app.use(
 		credentials: true,
 		optionsSuccessStatus: 200,
 		methods: '*',
-		origin: ['http://localhost:3000', 'http://localhost:3001'],
+		origin: [
+			'http://localhost:3000',
+			'https://louy-hany-real-e-state.vercel.app/',
+		],
 	})
 )
 
