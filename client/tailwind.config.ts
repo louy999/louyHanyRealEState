@@ -12,7 +12,7 @@ export default {
         primary100: "#019b98",
         primary200: "#55ccc9",
         primary300: "#c1ffff",
-        accent100: "#dd0025",
+        accent100: "#ef4444",
         accent200: "#ffbfab",
         text100: "#014e60",
         text200: "#3f7a8d",

@@ -16,6 +16,7 @@ type OfferTypes = {
 	title: string
 	unit_type: string
 	developer_name: string
+	delivery_date: string
 }
 
 export default OfferTypes

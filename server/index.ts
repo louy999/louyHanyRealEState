@@ -28,7 +28,7 @@ app.use(
 		methods: '*',
 		origin: [
 			'http://localhost:3000',
-			'https://louy-hany-real-e-state.vercel.app/',
+			'https://louy-hany-real-e-state.vercel.app',
 		],
 	})
 )

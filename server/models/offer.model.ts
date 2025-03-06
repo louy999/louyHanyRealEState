@@ -8,7 +8,7 @@ class OfferModel {
 			//open connect with DB1
 			const connect = await db.connect()
 			const sql =
-				'INSERT INTO offer ( developer_id, image_offer, furniture, down_payment, types, location, installment, areas, bed, bath, status, cat, title, unit_type, developer_name ) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15 ) returning *'
+				'INSERT INTO offer ( developer_id, image_offer, furniture, down_payment, types, location, installment, areas, bed, bath, status, cat, title, unit_type, developer_name, delivery_date ) values ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16 ) returning *'
 			//run query
 			const result = await connect.query(sql, [
 				u.developer_id,
@@ -26,6 +26,7 @@ class OfferModel {
 				u.title,
 				u.unit_type,
 				u.developer_name,
+				u.delivery_date,
 			])
 			//release connect
 			connect.release()
@@ -58,6 +59,36 @@ class OfferModel {
 			//open connect with DB
 			const connect = await db.connect()
 			const sql = 'SELECT unit_type  from offer'
+			//run query
+			const result = await connect.query(sql)
+			//release connect
+			connect.release()
+			//return created Offer
+			return result.rows
+		} catch (err) {
+			throw new Error(`${err}`)
+		}
+	}
+	async getAllOffersDelivery(): Promise<OfferTypes[]> {
+		try {
+			//open connect with DB
+			const connect = await db.connect()
+			const sql = 'SELECT delivery_date  from offer'
+			//run query
+			const result = await connect.query(sql)
+			//release connect
+			connect.release()
+			//return created Offer
+			return result.rows
+		} catch (err) {
+			throw new Error(`${err}`)
+		}
+	}
+	async getAllOffersAreas(): Promise<OfferTypes[]> {
+		try {
+			//open connect with DB
+			const connect = await db.connect()
+			const sql = 'SELECT areas  from offer'
 			//run query
 			const result = await connect.query(sql)
 			//release connect

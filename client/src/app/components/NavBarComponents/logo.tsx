@@ -16,7 +16,10 @@ const LogoNavbar = () => {
           width={1000}
           height={1000}
         />
-        Louy Hany
+        <div className="flex flex-wrap items-center   ">
+          <span className="w-full text-start">Louy Hany</span>
+          <span className="text-xs  w-24 text-center">Real Estate</span>
+        </div>
       </Link>
     </div>
   );

@@ -14,7 +14,6 @@ interface UserData {
 
 const LinksNavBar = () => {
   const [dataUsers, setDataUsers] = useState<UserData | null>(null);
-
   const pathname = usePathname();
   const value = getCookie("token");
 
@@ -34,6 +33,8 @@ const LinksNavBar = () => {
       fetchName();
     }
   }, [value]);
+
+  console.log(dataUsers);
 
   return (
     <>
@@ -95,10 +96,7 @@ const LinksNavBar = () => {
           </div>
         </div>
       ) : (
-        <Link
-          href="/profile"
-          className="hidden md:flex justify-center items-center gap-1 capitalize text-xl font-bold cursor-pointer "
-        >
+        <div className="hidden md:flex justify-center items-center gap-1 capitalize text-xl font-bold  ">
           <Image
             src={`${process.env.img}/image/${dataUsers?.image_profile}`}
             width={200}
@@ -107,7 +105,7 @@ const LinksNavBar = () => {
             height={200}
           />
           <div>{dataUsers?.name}</div>
-        </Link>
+        </div>
       )}
     </>
   );

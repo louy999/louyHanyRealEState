@@ -1,16 +1,37 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { CiMenuFries } from "react-icons/ci";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { getCookie } from "cookies-next/client";
 import Image from "next/image";
-
+interface UserData {
+  name: string;
+  image_profile: string;
+}
 const MobilNav = () => {
+  const [dataUsers, setDataUsers] = useState<UserData | null>(null);
   const pathname = usePathname();
   const value = getCookie("token");
 
   const [activeMenu, setActiveMenu] = useState(false);
+
+  useEffect(() => {
+    const fetchName = async () => {
+      try {
+        const res = await axios.get<{ data: UserData }>(
+          `${process.env.local}/users/${value}`
+        );
+        setDataUsers(res.data.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    if (value) {
+      fetchName();
+    }
+  }, [value]);
   return (
     <>
       <CiMenuFries
@@ -81,22 +102,17 @@ const MobilNav = () => {
                 </Link>
               </div>
             ) : (
-              <Link
-                href="/profile"
-                className="flex  items-center gap-1 capitalize text-xl font-bold cursor-pointer"
-              >
+              <div className="flex  items-center gap-1 capitalize text-xl font-bold cursor-pointer">
                 {" "}
                 <Image
-                  src={`${process.env.img}/image/${sessionStorage.getItem(
-                    "image_profile"
-                  )}`}
+                  src={`${process.env.img}/image/${dataUsers?.image_profile}`}
                   width={200}
                   alt=""
                   className="w-8 h-8 rounded-full"
                   height={200}
                 />{" "}
-                <div>{sessionStorage.getItem("name")}</div>
-              </Link>
+                <div>{dataUsers?.name}</div>
+              </div>
             )}
           </ul>
         </>

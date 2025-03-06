@@ -18,8 +18,10 @@ const nextConfig: NextConfig = {
   },
   env: {
     customKey: "novaraTo",
-    local: "https://louyhanyrealestate-production.up.railway.app/api",
-    img: "https://louyhanyrealestate-production.up.railway.app/",
+    local: "http://localhost:5000/api",
+    // local: "https://louyhanyrealestate-production.up.railway.app/api",
+    // img: "https://louyhanyrealestate-production.up.railway.app/",
+    img: "http://localhost:5000",
     SecretToken: "novaraTo",
   },
 };

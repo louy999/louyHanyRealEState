@@ -3,6 +3,11 @@ import { useState } from "react";
 import { getCookie } from "cookies-next/client";
 import axios from "axios";
 import { toast } from "react-toastify";
+interface RequestResponse {
+  data: {
+    id: string;
+  };
+}
 
 const AddRequest = () => {
   const token = getCookie("token");
@@ -13,13 +18,15 @@ const AddRequest = () => {
     if (token) {
       if (request) {
         try {
-          const res = await axios.post(`${process.env.local}/req`, {
-            request,
-            user_id: token,
-          });
+          const res = await axios.post<RequestResponse>(
+            `${process.env.local}/req`,
+            {
+              request,
+              user_id: token,
+            }
+          );
           toast.success("this request is done");
-          console.log(res);
-
+          window.location.hash = `comment-${res.data.data.id}`;
           window.location.reload();
         } catch (error) {
           console.log(error);

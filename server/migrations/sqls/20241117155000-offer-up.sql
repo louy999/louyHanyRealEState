@@ -16,5 +16,6 @@ CREATE TABLE offer(
     cat VARCHAR(250) NOT NULL,
     title Text,
     unit_type Text,
-    developer_name VARCHAR(250)
+    developer_name VARCHAR(250),
+    delivery_date VARCHAR(250)
 );
