@@ -34,8 +34,6 @@ const LinksNavBar = () => {
     }
   }, [value]);
 
-  console.log(dataUsers);
-
   return (
     <>
       <ul className="rounded-box mt-3 w-52 p-2 gap-5 items-center hidden md:flex">

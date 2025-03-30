@@ -28,6 +28,8 @@ interface ApiResponse {
 interface AllReplayProps {
   info: Info;
 }
+import { io } from "socket.io-client";
+const socket = io("http://localhost:5000");
 
 const AllReplay: React.FC<AllReplayProps> = ({ info }) => {
   const token = getCookie("token");
@@ -41,7 +43,10 @@ const AllReplay: React.FC<AllReplayProps> = ({ info }) => {
         const res = await axios.get<ApiResponse>(
           `${process.env.local}/replay/req/${info.id}`
         );
-        setDataReplay(res.data.data); // TypeScript now knows `res.data` contains `data: Replay[]`
+        setDataReplay(res.data.data);
+        socket.on("all_rep", () => {
+          fetchAllReplayByRequestId();
+        });
       } catch (error) {
         console.error(error);
       }

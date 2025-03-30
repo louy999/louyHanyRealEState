@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { getCookie } from "cookies-next/client";
 import Image from "next/image";
+import axios from "axios";
 interface UserData {
   name: string;
   image_profile: string;

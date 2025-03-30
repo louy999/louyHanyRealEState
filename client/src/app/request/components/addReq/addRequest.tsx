@@ -8,6 +8,8 @@ interface RequestResponse {
     id: string;
   };
 }
+import { io } from "socket.io-client";
+const socket = io("http://localhost:5000");
 
 const AddRequest = () => {
   const token = getCookie("token");
@@ -27,7 +29,8 @@ const AddRequest = () => {
           );
           toast.success("this request is done");
           window.location.hash = `comment-${res.data.data.id}`;
-          window.location.reload();
+          // window.location.reload();
+          socket.emit("add_request");
         } catch (error) {
           console.log(error);
         }

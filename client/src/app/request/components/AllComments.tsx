@@ -23,6 +23,8 @@ interface FetchCommentsResponse {
     date: string;
   }[];
 }
+import { io } from "socket.io-client";
+const socket = io("http://localhost:5000");
 
 const AllComments = () => {
   const [loading, setLoading] = useState(false);
@@ -50,35 +52,38 @@ const AllComments = () => {
     }
   };
 
+  const fetchAllComment = async () => {
+    setLoading(false);
+    try {
+      const res = await axios.get<FetchCommentsResponse>(
+        `${process.env.local}/req`
+      );
+      setDataFetchComment(res.data.data);
+    } catch (error) {
+      console.log(error);
+    } finally {
+      setLoading(true);
+    }
+  };
   useEffect(() => {
-    const fetchAllComment = async () => {
-      setLoading(false);
-      try {
-        const res = await axios.get<FetchCommentsResponse>(
-          `${process.env.local}/req`
-        );
-        setDataFetchComment(res.data.data);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(true);
-      }
-    };
     fetchAllComment();
+    socket.on("all_com", () => {
+      fetchAllComment();
+    });
   }, []);
 
   const updateCommentFetch = async (id: string) => {
     try {
       await axios.patch(`${process.env.local}/req/${id}`, {
         request: newReq,
+        id,
       });
       toast.success("Comment updated successfully!");
+
       setEditCommentId(null); // Exit edit mode
-      setDataFetchComment((prev) =>
-        prev.map((comment) =>
-          comment.id === id ? { ...comment, request: newReq } : comment
-        )
-      );
+      socket.on("all_com", () => {
+        fetchAllComment();
+      });
     } catch (error) {
       console.log(error);
     }

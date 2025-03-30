@@ -6,6 +6,8 @@ import { toast } from "react-toastify"; // Ensure toast is imported
 interface AddReplayProps {
   request_id: string; // Replace `string` with the correct type if different
 }
+import { io } from "socket.io-client";
+const socket = io("http://localhost:5000");
 
 const AddReplay: React.FC<AddReplayProps> = ({ request_id }) => {
   const token = getCookie("token") as string | undefined; // Explicitly type `token`
@@ -19,17 +21,16 @@ const AddReplay: React.FC<AddReplayProps> = ({ request_id }) => {
           user_id: token,
           request_id,
         });
-        console.log(res.data);
+
         toast.success("This request is done");
-        setTimeout(() => {
-          window.location.reload();
-        }, 2000);
+        window.location.hash = `comment-${res.data.data.id}`;
+        socket.emit("add_rep");
       } catch (error) {
         console.error(error);
         toast.error("Failed to send the replay");
       }
     } else {
-      toast.error("Please log inasdfsdfنستيابنستايبتن");
+      toast.error("Please log");
     }
   };
 

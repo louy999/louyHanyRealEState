@@ -5,7 +5,8 @@ import cors from 'cors'
 import helmet from 'helmet'
 import cookieParser from 'cookie-parser'
 import path from 'path'
-
+import {Server} from 'socket.io'
+import http from 'http'
 //import files
 import config from './config'
 import errorHandelMiddleware from './middleware/error.handel.middleware'
@@ -76,7 +77,22 @@ app.post('/ver', (req: Request, res: Response) => {
 	sendMail(req.body.email, req.body.number), res.json({message: 'Email send'})
 })
 
-app.listen(port, () => {
+const server = http.createServer(app)
+const io = new Server(server, {
+	cors: {
+		origin: ['http://localhost:3000', 'http://localhost:3001'],
+		methods: ['GET', 'POST'],
+	},
+})
+io.on('connection', (socket) => {
+	socket.on('add_request', () => {
+		io.emit('all_com')
+	})
+	socket.on('add_rep', () => {
+		io.emit('all_rep')
+	})
+})
+server.listen(port, () => {
 	console.log(`server is start with port :${port}`)
 })
 
