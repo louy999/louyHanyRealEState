@@ -8,7 +8,8 @@ import { toast } from "react-toastify";
 
 interface Replay {
   id: string; // Replace with the actual type of `id`
-  replay: string; // Add fields as per the API response
+  replay: string;
+  user_id: string; // Add fields as per the API response
 }
 interface DeleteCommentResponse {
   data: {
@@ -29,28 +30,32 @@ interface AllReplayProps {
   info: Info;
 }
 import { io } from "socket.io-client";
+import { TbEdit } from "react-icons/tb";
 const socket = io("http://localhost:5000");
 
 const AllReplay: React.FC<AllReplayProps> = ({ info }) => {
   const token = getCookie("token");
-
+  const [openEditInput, setOpenEditInput] = useState(false);
+  const [newRep, setNewRep] = useState("");
   const [dataReplay, setDataReplay] = useState<Replay[]>([]);
   const [show, setShow] = useState(false);
 
+  const fetchAllReplayByRequestId = async () => {
+    try {
+      const res = await axios.get<ApiResponse>(
+        `${process.env.local}/replay/req/${info.id}`
+      );
+      setDataReplay(res.data.data);
+      console.log(res.data.data);
+
+      socket.on("all_rep", () => {
+        fetchAllReplayByRequestId();
+      });
+    } catch (error) {
+      console.error(error);
+    }
+  };
   useEffect(() => {
-    const fetchAllReplayByRequestId = async () => {
-      try {
-        const res = await axios.get<ApiResponse>(
-          `${process.env.local}/replay/req/${info.id}`
-        );
-        setDataReplay(res.data.data);
-        socket.on("all_rep", () => {
-          fetchAllReplayByRequestId();
-        });
-      } catch (error) {
-        console.error(error);
-      }
-    };
     fetchAllReplayByRequestId();
   }, [info]);
   const deleteComment = async (idComment: string) => {
@@ -60,13 +65,26 @@ const AllReplay: React.FC<AllReplayProps> = ({ info }) => {
       );
       console.log(res.data.data);
       toast.success("This request is deleted");
-      setTimeout(() => {
-        window.location.reload();
-      }, 3000);
+      fetchAllReplayByRequestId();
     } catch (error) {
       console.log(error);
     }
   };
+  const updateReplayFetch = async (id: string) => {
+    try {
+      const res = await axios.patch(`${process.env.local}/replay/${id}`, {
+        replay: newRep,
+        id: id,
+      });
+      console.log(res.data);
+      toast.success("Comment updated successfully!");
+      setOpenEditInput(false);
+      fetchAllReplayByRequestId();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   return (
     <>
       <aside>
@@ -90,13 +108,19 @@ const AllReplay: React.FC<AllReplayProps> = ({ info }) => {
                 <div className="flex justify-between">
                   <SomeInfo info={replay} />
                   {token ? (
-                    token === info.user_id ? (
+                    token === replay.user_id ? (
                       <div className="flex gap-2 text-3xl">
                         <MdDeleteForever
                           className="text-accent100 hover:text-accent200 duration-300 cursor-pointer "
                           onClick={() => deleteComment(replay.id)}
                         />
-                        {/* <TbEdit className="text-primary100 hover:text-primary200 duration-300 cursor-pointer" /> */}
+                        <TbEdit
+                          onClick={() => {
+                            setOpenEditInput(true);
+                            setNewRep(replay.replay);
+                          }}
+                          className="text-primary100 hover:text-primary200 duration-300 cursor-pointer"
+                        />
                       </div>
                     ) : (
                       ""
@@ -105,10 +129,34 @@ const AllReplay: React.FC<AllReplayProps> = ({ info }) => {
                     ""
                   )}
                 </div>
-
-                <p className="mb-3 text-gray-500 :text-gray-400">
-                  {replay.replay}
-                </p>
+                {openEditInput ? (
+                  <>
+                    <textarea
+                      id="chat"
+                      value={newRep}
+                      rows={3}
+                      onChange={(e) => setNewRep(e.target.value)}
+                      className="block mx-4 p-2.5 resize-none border-black border-2 w-full text-sm text-gray-900 bg-white rounded-lg focus:ring-blue-500 focus:border-blue-500"
+                      placeholder="Your message..."
+                    ></textarea>
+                    <button
+                      className="bg-green-500 text-white px-4 py-2 rounded-lg mt-2 ml-4"
+                      onClick={() => updateReplayFetch(replay.id)}
+                    >
+                      Save
+                    </button>
+                    <button
+                      className="bg-gray-400 text-white px-4 py-2 rounded-lg mt-2 ml-2"
+                      onClick={() => setOpenEditInput(false)}
+                    >
+                      Cancel
+                    </button>
+                  </>
+                ) : (
+                  <p className="mb-3 text-gray-500 :text-gray-400">
+                    {replay.replay}
+                  </p>
+                )}
               </article>
             </div>
           ))}

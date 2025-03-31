@@ -6,6 +6,12 @@ import { toast } from "react-toastify"; // Ensure toast is imported
 interface AddReplayProps {
   request_id: string; // Replace `string` with the correct type if different
 }
+interface ApiResponse {
+  data: {
+    id: string; // Adjust the type according to your actual API response
+  };
+}
+
 import { io } from "socket.io-client";
 const socket = io("http://localhost:5000");
 
@@ -16,15 +22,19 @@ const AddReplay: React.FC<AddReplayProps> = ({ request_id }) => {
   const addRequestFetch = async () => {
     if (token) {
       try {
-        const res = await axios.post(`${process.env.local}/replay`, {
-          replay,
-          user_id: token,
-          request_id,
-        });
+        const res = await axios.post<ApiResponse>(
+          `${process.env.local}/replay`,
+          {
+            replay,
+            user_id: token,
+            request_id,
+          }
+        );
 
         toast.success("This request is done");
         window.location.hash = `comment-${res.data.data.id}`;
         socket.emit("add_rep");
+        setRequest("");
       } catch (error) {
         console.error(error);
         toast.error("Failed to send the replay");
@@ -35,7 +45,7 @@ const AddReplay: React.FC<AddReplayProps> = ({ request_id }) => {
   };
 
   return (
-    <form>
+    <form className="">
       <label htmlFor="chat" className="sr-only">
         Your message
       </label>

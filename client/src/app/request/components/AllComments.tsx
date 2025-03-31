@@ -35,23 +35,6 @@ const AllComments = () => {
   const [newReq, setNewReq] = useState("");
 
   const token = getCookie("token");
-
-  const DeleteComment = async (idComment: string) => {
-    try {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const res = await axios.delete<DeleteCommentResponse>(
-        `${process.env.local}/req/${idComment}`
-      );
-      toast.success("This request is deleted");
-
-      setTimeout(() => {
-        window.location.reload();
-      }, 3000);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   const fetchAllComment = async () => {
     setLoading(false);
     try {
@@ -65,6 +48,20 @@ const AllComments = () => {
       setLoading(true);
     }
   };
+  const DeleteComment = async (idComment: string) => {
+    try {
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const res = await axios.delete<DeleteCommentResponse>(
+        `${process.env.local}/req/${idComment}`
+      );
+      toast.success("This request is deleted");
+
+      fetchAllComment();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     fetchAllComment();
     socket.on("all_com", () => {
@@ -74,16 +71,16 @@ const AllComments = () => {
 
   const updateCommentFetch = async (id: string) => {
     try {
-      await axios.patch(`${process.env.local}/req/${id}`, {
+      const res = await axios.patch(`${process.env.local}/req/${id}`, {
         request: newReq,
-        id,
+        id: id,
       });
+      console.log(res.data);
+
       toast.success("Comment updated successfully!");
 
       setEditCommentId(null); // Exit edit mode
-      socket.on("all_com", () => {
-        fetchAllComment();
-      });
+      fetchAllComment();
     } catch (error) {
       console.log(error);
     }
